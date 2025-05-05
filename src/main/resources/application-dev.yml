@@ -29,9 +29,9 @@ eureka:
       defaultZone: ${DISCOVERY_SERVER_URI:http://localhost:8761/eureka}
 
 redis:
-  host: ${REDIS_HOST:172.16.229.212}
-  port: ${REDIS_PORT:30079}
-  password: ${REDIS_PASSWORD:~}
+  host: ${REDIS_HOST:10.112.20.87}
+  port: ${REDIS_PORT:6379}
+  password: ${REDIS_PASSWORD:YourStrongRedisPass}
   ssl:
     enabled: false
     ca: ${REDIS_SSL_CA:~}
