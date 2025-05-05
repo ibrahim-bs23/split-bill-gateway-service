@@ -124,19 +124,19 @@ public class AuthorizationFilter implements GlobalFilter {
 
             // Convert user identity from access token
             final String jwtToken = authorizationValuePart[1];
-            final String userIdentity;
+            final String userName;
             try {
                 JWTClaimsSet claimsSet = JWTParser.parse(jwtToken).getJWTClaimsSet();
                 if (claimsSet.getExpirationTime().getTime() < System.currentTimeMillis())
                     return FilterValidationAndMapper.onError(exchange, ErrorMessages.SESSION_TIMEOUT);
-                userIdentity = claimsSet.getSubject();
+                userName = claimsSet.getSubject();
             } catch (ParseException e) {
                 return FilterValidationAndMapper.onError(exchange, ErrorMessages.AUTH_HEADER_MISS_MATCH);
             }
 
-            // Find AccessTokenRedis by userIdentity
+            // Find AccessTokenRedis by userName
             // Create CurrentUserContext and put to header as 'CurrentContext'
-            final RedisAccessToken redisAccessToken = redisService.accessToken(userIdentity);
+            final RedisAccessToken redisAccessToken = redisService.accessToken(userName);
             if (redisAccessToken == null || !ChecksumUtil.verifyChecksum(jwtToken, redisAccessToken.getAccessToken())) {
                 return FilterValidationAndMapper.onError(exchange, ErrorMessages.AUTH_HEADER_MISS_MATCH);
             }
