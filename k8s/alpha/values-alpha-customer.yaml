@@ -1,0 +1,68 @@
+replicaCount: 1
+prefix: ""
+
+image:
+  repository: ibprodreg.nccbank.com.bd/prod/gateway-service
+  pullPolicy: Always
+  tag: "v1.0.0"
+
+imagePullSecrets: prod-harbor
+
+config:
+  TZ: "Asia/Dhaka"
+  SPRING_PROFILES_ACTIVE: "k8s"
+  LOKI_DISTRIBUTOR_URL: "http://loki-distributed-distributor.loki:3100/loki/api/v1/push"
+  EUREKA_DEFAULT_ZONE: "http://ib-rt-discovery-service.ib-app:8761/eureka"
+
+
+  DB_PLATFORM: oracle
+  SERVICE_NAME: gateway-customer
+  CURRENT_SCHEMA: GATEWAY_SERVICE
+  DB_DIALECT: org.hibernate.dialect.OracleDialect
+
+  MASTER_DB_URL: jdbc:oracle:thin:@10.5.44.11:1521:iblivedb
+  MASTER_R2DBC_URL: r2dbc:oracle://10.5.44.11:1521/iblivedb
+  MASTER_R2DBC_USER: gateway_service
+  MASTER_R2DBC_PASSWORD: microib@@9876!
+
+  ENCRYPTED_KEY: "WwiLCJzY29wZSI6Wy"
+  JWT_SECRET_KEY: "WwiLCJzY29wZSI6Wy"
+
+  REDIS_HOST: redis-master.redis
+  REDIS_PORT: "6379"
+  REDIS_DATABASE_INDEX: "1"
+
+  SWAGGER_ENABLE: "true"
+  LIQUIBASE_ENABLE: "true"
+
+secrets:
+  enabled: true
+
+liveness:
+  initialDelaySeconds: 90
+  periodSeconds: 2
+  successThreshold: 1
+  failureThreshold: 10
+
+readiness:
+  initialDelaySeconds: 90
+  periodSeconds: 2
+  successThreshold: 1
+  failureThreshold: 10
+
+service:
+  type: ClusterIP
+  targetPort: 8080
+  port: 80
+
+ingress:
+  enabled: flase
+  hosts:
+    - host: ibuat-gateway.nccbank.com.bd
+      paths:
+        - path: /
+          pathType: Prefix
+    - host: ibuatapi.nccbank.com.bd
+      paths:
+        - path: /
+          pathType: Prefix

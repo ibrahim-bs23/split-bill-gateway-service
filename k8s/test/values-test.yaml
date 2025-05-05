@@ -1,0 +1,42 @@
+replicaCount: 1
+prefix: ""
+
+image:
+  repository: harbor.devbsfintech23.com/ib/gateway-service
+  pullPolicy: Always
+  tag: "test"
+
+imagePullSecrets: fintech-harbor
+
+config:
+  SPRING_PROFILES_ACTIVE: "k8s"
+  DB_PLATFORM: "postgres"
+  DB_URL: "jdbc:postgresql://172.16.229.217:5432/microibdb?currentSchema=cms_service"
+  R2DB_URL: "r2dbc:postgresql://172.16.229.217:5432/microibdb?currentSchema=cms_service"
+  DB_DIALECT: "org.hibernate.dialect.PostgreSQLDialect"
+  LIQUIBASE_CONTEXTS: "common,dev,dummy"
+  EUREKA_DEFAULT_ZONE: "http://discovery-sts-0.discovery-service.bs-ib-dev:8761/eureka,http://discovery-sts-1.discovery-service.bs-ib-dev:8761/eureka,http://discovery-sts-2.discovery-service.bs-ib-dev:8761/eureka"
+  REDIS_HOST: "172.16.229.212"
+  REDIS_PORT: "30079"
+  LOKI_DISTRIBUTOR_URL: "http://loki-distributed-distributor.loki-distributed:3100/loki/api/v1/push"
+  TZ: "Asia/Dhaka"
+
+secrets:
+  enabled: true
+
+liveness:
+  initialDelaySeconds: 120
+  periodSeconds: 2
+  successThreshold: 1
+  failureThreshold: 10
+
+readiness:
+  initialDelaySeconds: 120
+  periodSeconds: 2
+  successThreshold: 1
+  failureThreshold: 10
+
+service:
+  type: ClusterIP
+  targetPort: 8080
+  port: 80

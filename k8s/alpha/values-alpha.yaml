@@ -1,0 +1,106 @@
+replicaCount: 1
+prefix: ""
+
+image:
+<<<<<<< HEAD
+  repository: ibuatreg.nccbank.com.bd/uat/account-service
+  pullPolicy: Always
+  tag: "alpha"
+
+imagePullSecrets: ibuatreg-secret
+
+config:
+  SPRING_PROFILES_ACTIVE: "k8s"
+  DB_PLATFORM: "oracle"
+  DB_URL: "jdbc:oracle:thin:@10.5.34.31:1522:ibuatdb"
+  DB_DIALECT: "org.hibernate.dialect.OracleDialect"
+  LIQUIBASE_CONTEXTS: "common,dev,dummy"
+  EUREKA_DEFAULT_ZONE: "http://ib-rt-discovery-sts-0.ib-rt-discovery-service:8761/eureka,http://ib-rt-discovery-sts-1.ib-rt-discovery-service:8761/eureka,http://ib-rt-discovery-sts-2.ib-rt-discovery-service:8761/eureka"
+  REDIS_HOST: "redis-master.redis"
+  REDIS_PORT: "6379"
+  LOKI_DISTRIBUTOR_URL: "http://loki-distributed-distributor.loki-distributed:3100/loki/api/v1/push"
+  TZ: "Asia/Dhaka"
+  KAFKA_BOOTSTRAP_SERVERS: "kafka.kafka:9092"
+=======
+  repository: ibprodreg.nccbank.com.bd/prod/gateway-service
+  pullPolicy: Always
+  tag: "v1.0.0"
+
+imagePullSecrets: prod-harbor
+
+config:
+  TZ: "Asia/Dhaka"
+  SPRING_PROFILES_ACTIVE: "k8s"
+  LOKI_DISTRIBUTOR_URL: "http://loki-distributed-distributor.loki:3100/loki/api/v1/push"
+  EUREKA_DEFAULT_ZONE: "http://ib-rt-discovery-service.ib-app:8761/eureka"
+
+
+  DB_PLATFORM: oracle
+  SERVICE_NAME: gateway-customer
+  CURRENT_SCHEMA: GATEWAY_SERVICE
+  DB_DIALECT: org.hibernate.dialect.OracleDialect
+
+  MASTER_DB_URL: jdbc:oracle:thin:@10.5.44.11:1521:iblivedb
+  MASTER_R2DBC_URL: r2dbc:oracle://10.5.44.11:1521/iblivedb
+  MASTER_R2DBC_USER: gateway_service
+  MASTER_R2DBC_PASSWORD: microib@@9876!
+
+  ENCRYPTED_KEY: "WwiLCJzY29wZSI6Wy"
+  JWT_SECRET_KEY: "WwiLCJzY29wZSI6Wy"
+
+  REDIS_HOST: redis-master.redis
+  REDIS_PORT: "6379"
+  REDIS_DATABASE_INDEX: "1"
+
+  SWAGGER_ENABLE: "true"
+  LIQUIBASE_ENABLE: "true"
+>>>>>>> 019bbd4b9bf98394cb2d5cf3d6d33abcf164e2f1
+
+secrets:
+  enabled: true
+
+liveness:
+<<<<<<< HEAD
+  initialDelaySeconds: 120
+=======
+  initialDelaySeconds: 90
+>>>>>>> 019bbd4b9bf98394cb2d5cf3d6d33abcf164e2f1
+  periodSeconds: 2
+  successThreshold: 1
+  failureThreshold: 10
+
+readiness:
+<<<<<<< HEAD
+  initialDelaySeconds: 120
+=======
+  initialDelaySeconds: 90
+>>>>>>> 019bbd4b9bf98394cb2d5cf3d6d33abcf164e2f1
+  periodSeconds: 2
+  successThreshold: 1
+  failureThreshold: 10
+
+service:
+  type: ClusterIP
+  targetPort: 8080
+  port: 80
+
+ingress:
+<<<<<<< HEAD
+  enabled: true
+  hosts:
+    - host: ibuat-account.nccbank.com.bd
+      paths:
+        - path: /
+          pathType: Prefix
+=======
+  enabled: flase
+  hosts:
+    - host: ibuat-gateway.nccbank.com.bd
+      paths:
+        - path: /
+          pathType: Prefix
+    - host: ibuatapi.nccbank.com.bd
+      paths:
+        - path: /
+          pathType: Prefix
+>>>>>>> 019bbd4b9bf98394cb2d5cf3d6d33abcf164e2f1

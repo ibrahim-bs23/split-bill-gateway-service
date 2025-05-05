@@ -1,0 +1,54 @@
+replicaCount: 1
+prefix: ""
+
+image:
+  repository: harbor.devbsfintech23.com/abbl/abbl-ib-rt-gateway-service
+  pullPolicy: Always
+  tag: dev
+
+imagePullSecrets: fintech-harbor
+
+config:
+  DB_PLATFORM: "microsoft-sql-server"
+  MASTER_DB_URL: "jdbc:sqlserver://172.16.229.164:1433;databaseName=abbldev;schema=gateway_customer_service;encrypt=false;trustServerCertificate=false"
+  MASTER_DB_USER: "ibdbadmin"
+  MASTER_R2DBC_URL: "r2dbc:mssql://172.16.229.164:1433/abbldev"
+  LIQUIBASE_CONTEXTS: "dev"
+  MASTER_R2DBC_USER: "ibdbadmin"
+  EUREKA_DEFAULT_ZONE: "http://discovery-sts-0.discovery-service.bs-ib-dev:8761/eureka,http://discovery-sts-1.discovery-service.bs-ib-dev:8761/eureka,http://discovery-sts-2.discovery-service.bs-ib-dev:8761/eureka"
+  REDIS_HOST: "172.16.229.212"
+  REDIS_PORT: "30079"
+  LOKI_DISTRIBUTOR_URL: "http://loki-distributed-distributor.loki-distributed:3100/loki/api/v1/push"
+  TZ: "Asia/Dhaka"
+  ACTIVE_PROFILE: "k8s"
+  KAFKA_BOOTSTRAP: "localhost:19092"
+  FACE_RECOGNIZE_IS_SANDBOX: "true"
+  EKYC_API_PATH: "/sandbox-api/v2/verifications/autofill"
+  SERVER_PORT: "8000"
+  CURRENT_SCHEMA: "gateway_customer_service"
+  REDIS_DATABASE_INDEX: "14"
+  SPRING_ACTIVE_PROFILE: "k8s"
+
+secret:
+  enabled: true
+
+secrets:
+  MASTER_DB_PASSWORD: REJARGhha2E=
+  MASTER_R2DBC_PASSWORD: REJARGhha2E=
+  REDIS_PASSWORD: ""
+liveness:
+  initialDelaySeconds: 120
+  periodSeconds: 2
+  successThreshold: 1
+  failureThreshold: 10
+
+readiness:
+  initialDelaySeconds: 120
+  periodSeconds: 2
+  successThreshold: 1
+  failureThreshold: 10
+
+service:
+  type: ClusterIP
+  targetPort: 8000
+  port: 80

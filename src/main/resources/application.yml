@@ -1,0 +1,142 @@
+server:
+  shutdown: graceful
+  max-http-request-header-size: 50MB
+
+spring:
+  profiles:
+    active: ${SPRING_ACTIVE_PROFILE:dev}
+  application:
+    name: ${SERVICE_NAME:gateway-customer}
+  r2dbc:
+    schema: ${CURRENT_SCHEMA}
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lowerCaseServiceId: true
+      routes:
+        - id: 'admin-service'
+          uri: 'lb://admin-service'
+          predicates:
+            - Path= /api/v1/admin/**
+        - id: 'account-service'
+          uri: 'lb://account-service'
+          predicates:
+            - Path= /api/v1/account/**
+        - id: 'cbs-service'
+          uri: 'lb://corebankingmiddleware-service'
+          predicates:
+            - Path= /api/v1/cbs-middleware/**
+        - id: 'chargelimit-service'
+          uri: 'lb://chargelimit-service'
+          predicates:
+            - Path= /api/v1/chargeFee/**
+        - id: 'cms-service'
+          uri: 'lb://cms-service'
+          predicates:
+            - Path= /api/v1/cms/**
+        - id: 'file-server-service'
+          uri: 'lb://file-server-service'
+          predicates:
+            - Path= /api/v1/file-server/**
+        - id: 'fund-transfer-service'
+          uri: 'lb://fund-transfer-service'
+          predicates:
+            - Path= /api/v1/fund-transfer/**
+        - id: 'meta-service'
+          uri: 'lb://meta-service'
+          predicates:
+            - Path= /api/v1/meta/**
+        - id: 'payment-service'
+          uri: 'lb://payment-service'
+          predicates:
+            - Path= /api/v1/payment/**
+        - id: 'report-service'
+          uri: 'lb://report-service'
+          predicates:
+            - Path= /api/v1/report/**
+        - id: 'tfa-service'
+          uri: 'lb://tfa-service'
+          predicates:
+            - Path= /api/v1/two/factor/**
+        - id: 'user-service'
+          uri: 'lb://user-service'
+          predicates:
+            - Path= /api/v1/user/**
+        - id: 'idtp-transaction-service'
+          uri: 'lb://idtp-transaction-service'
+          predicates:
+            - Path= /api/v1/idtp/**
+        - id: 'banglaqr-service'
+          uri: 'lb://banglaqr-service'
+          predicates:
+            - Path= /api/v1/banglaqr/**
+        - id: 'notification-service'
+          uri: 'lb://notification-service'
+          predicates:
+            - Path= /api/v1/notification/**
+  main:
+    web-application-type: reactive
+    allow-bean-definition-overriding: true
+  servlet:
+    multipart:
+      max-file-size: 50MB
+
+eureka:
+  instance:
+    preferIpAddress: true
+    leaseRenewalIntervalInSeconds: 5
+    leaseExpirationDurationInSeconds: 10
+    instance-id: ${spring.application.name}:${random.value}
+  client:
+    fetchRegistry: true
+    registerWithEureka: true
+    registry-fetch-interval-seconds: 3
+
+redis:
+  database:
+    index: ${REDIS_DATABASE_INDEX:14}
+  pool:
+    max:
+      connection: ${REDIS_POOL_MAX_CONNECTION:30}
+      idle:
+        connection: ${REDIS_POOL_MAX_IDLE_CONNECTION:10}
+    min:
+      idle:
+        connection: ${REDIS_POOL_MIN_IDLE_CONNECTION:0}
+  ssl:
+    enabled: false
+    ca: ${REDIS_SSL_CA:~}
+
+management:
+  auditevents:
+    enable: false
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  info:
+    env:
+      enabled: true
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  tracing:
+    sampling:
+      probability: 1.0
+
+ignore:
+  header-param: '${IGNORE_HEADER_PARAM_FOR_LOG:password,cookie,authorization,token}'
+
+springdoc:
+  enable-native-support: true
+  swagger-ui:
+    path: /swagger-ui.html
+    config-url: /v3/api-docs/swagger-config
+
+ib-service:
+  jwt-secret-key: ${ENCRYPTED_KEY:WwiLCJzY29wZSI6Wy}
+  encrypted-key: ${JWT_SECRET_KEY:WwiLCJzY29wZSI6Wy}
+  auth-service-path: ${AUTH_SERVICE_PATH:api/v1/user}

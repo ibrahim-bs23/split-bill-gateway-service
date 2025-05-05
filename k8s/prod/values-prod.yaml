@@ -1,0 +1,70 @@
+replicaCount: 1
+prefix: ""
+
+image:
+  repository: ibprodreg.nccbank.com.bd/prod/gateway-customer-service
+  pullPolicy: Always
+  tag: "v1.0.0"
+
+imagePullSecrets: prod-harbor
+
+config:
+  TZ: "Asia/Dhaka"
+  SPRING_PROFILES_ACTIVE: "k8s"
+  LOKI_DISTRIBUTOR_URL: "http://loki-distributed-distributor.loki:3100/loki/api/v1/push"
+  EUREKA_DEFAULT_ZONE: "http://ib-rt-discovery-service.ib-app:8761/eureka"
+
+  DB_PLATFORM: oracle
+  SERVICE_NAME: gateway-customer
+  CURRENT_SCHEMA: GATEWAY_SERVICE
+  DB_DIALECT: org.hibernate.dialect.OracleDialect
+
+  MASTER_DB_URL: ""
+  MASTER_R2DBC_URL: ""
+  MASTER_R2DBC_USER: ""
+  MASTER_R2DBC_PASSWORD: ""
+
+  ENCRYPTED_KEY: ""
+  JWT_SECRET_KEY: ""
+
+  REDIS_HOST: ""
+  REDIS_PORT: ""
+  REDIS_DATABASE_INDEX: ""
+
+  SWAGGER_ENABLE: "false"
+  LIQUIBASE_ENABLE: "true"
+
+secret:
+  enabled: true
+
+secrets:
+  DUMMY: ""
+
+nodeSelector:
+  zone: "dmz"
+
+liveness:
+  initialDelaySeconds: 90
+  periodSeconds: 2
+  successThreshold: 1
+  failureThreshold: 10
+
+readiness:
+  initialDelaySeconds: 90
+  periodSeconds: 2
+  successThreshold: 1
+  failureThreshold: 10
+
+service:
+  type: ClusterIP
+  targetPort: 8080
+  port: 80
+
+ingress:
+  enabled: true
+  hosts:
+    - host: api.nccalways.com.bd
+      paths:
+        - path: /
+          pathType: Prefix
+
