@@ -96,7 +96,7 @@ eureka:
 
 redis:
   database:
-    index: ${REDIS_DATABASE_INDEX:14}
+    index: ${REDIS_DATABASE_INDEX:11}
   pool:
     max:
       connection: ${REDIS_POOL_MAX_CONNECTION:30}
@@ -140,3 +140,8 @@ ib-service:
   jwt-secret-key: ${ENCRYPTED_KEY:WwiLCJzY29wZSI6Wy}
   encrypted-key: ${JWT_SECRET_KEY:WwiLCJzY29wZSI6Wy}
   auth-service-path: ${AUTH_SERVICE_PATH:api/v1/user}
+
+payload:
+  encryption:
+    secret:
+      key: 3XT3RN@L_P@YL0@D_S3CR3T

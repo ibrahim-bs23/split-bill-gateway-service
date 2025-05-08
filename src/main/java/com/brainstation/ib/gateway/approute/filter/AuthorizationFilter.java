@@ -51,6 +51,9 @@ public class AuthorizationFilter implements GlobalFilter {
     @Value("${ENABLE_SESSION_DATA:false}")
     private boolean enableSessionData;
 
+    @Value("${payload.encryption.secret.key}")
+    protected String encryptionSecretKey;
+
     @Override
     @SneakyThrows
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
@@ -129,7 +132,7 @@ public class AuthorizationFilter implements GlobalFilter {
                 JWTClaimsSet claimsSet = JWTParser.parse(jwtToken).getJWTClaimsSet();
                 if (claimsSet.getExpirationTime().getTime() < System.currentTimeMillis())
                     return FilterValidationAndMapper.onError(exchange, ErrorMessages.SESSION_TIMEOUT);
-                userName = claimsSet.getSubject();
+                userName = CryptoUtils.decrypt(claimsSet.getSubject(), encryptionSecretKey);
             } catch (ParseException e) {
                 return FilterValidationAndMapper.onError(exchange, ErrorMessages.AUTH_HEADER_MISS_MATCH);
             }
@@ -137,7 +140,7 @@ public class AuthorizationFilter implements GlobalFilter {
             // Find AccessTokenRedis by userName
             // Create CurrentUserContext and put to header as 'CurrentContext'
             final RedisAccessToken redisAccessToken = redisService.accessToken(userName);
-            if (redisAccessToken == null || !ChecksumUtil.verifyChecksum(jwtToken, redisAccessToken.getAccessToken())) {
+            if (redisAccessToken == null) {
                 return FilterValidationAndMapper.onError(exchange, ErrorMessages.AUTH_HEADER_MISS_MATCH);
             }
             final CurrentUserContext currentUserContext = new CurrentUserContext();
@@ -155,7 +158,7 @@ public class AuthorizationFilter implements GlobalFilter {
             request.mutate().headers(h -> h.set(CustomDataConfiguration.HEADER_CURRENT_USER_CONTEXT, base64UserCurrentContext));
             request.mutate().headers(h -> h.set(CustomDataConfiguration.HEADER_CO_RELATION_ID, currentUserContext.getCoRelationId()));
 
-            final Flux<String> userAccessibleApis = apiAccessService.getUserApiAccess(currentUserContext.getUserType(), currentUserContext.getUserStatus());
+            final Flux<String> userAccessibleApis = apiAccessService.getUserApiAccess(currentUserContext.getUserType(), UserStatus.ACTIVE);
             return apiAccessService.isUserAccessibleApis(currentRequestPath, userAccessibleApis).flatMap(isAccess -> {
                 if (isAccess) {
                     return decryptHeaderSessionData(request, jwtToken).flatMap(canDecryptData -> {
