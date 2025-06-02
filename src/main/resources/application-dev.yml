@@ -15,7 +15,7 @@ spring:
         default_schema: ${CURRENT_SCHEMA:gateway_customer_service}
 
   datasource:
-    url: ${MASTER_DB_URL:jdbc:postgresql://10.112.20.236:5432/postgres?currentSchema=gateway_customer_service}
+    url: ${MASTER_DB_URL:jdbc:postgresql://10.112.20.100:5432/postgres?currentSchema=gateway_customer_service}
     username: ${MASTER_DB_USER:postgres}
     password: ${MASTER_DB_PASSWORD:mysecretpassword}
 
@@ -29,7 +29,7 @@ eureka:
       defaultZone: ${DISCOVERY_SERVER_URI:http://localhost:8761/eureka}
 
 redis:
-  host: ${REDIS_HOST:10.112.20.236}
+  host: ${REDIS_HOST:10.112.20.100}
   port: ${REDIS_PORT:6379}
   password: ${REDIS_PASSWORD:YourStrongRedisPass}
   ssl:
