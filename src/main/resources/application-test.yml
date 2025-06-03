@@ -1,0 +1,47 @@
+server:
+  port: ${SERVER_PORT:7030}
+
+spring:
+  jpa:
+    database: ${DATABASE_TYPE:postgresql}
+    database-platform: ${DATABASE_DIALECT:org.hibernate.dialect.PostgreSQLDialect}
+
+    hibernate:
+      ddl-auto: validate
+
+    properties:
+      hibernate:
+        # 4) Your default schema (optional if you include currentSchema in the URL)
+        default_schema: ${CURRENT_SCHEMA:gateway_customer_service}
+
+  datasource:
+    url: ${MASTER_DB_URL:jdbc:postgresql://10.112.20.100:5432/postgres?currentSchema=gateway_customer_service}
+    username: ${MASTER_DB_USER:postgres}
+    password: ${MASTER_DB_PASSWORD:mysecretpassword}
+
+  liquibase:
+    enabled: false
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${DISCOVERY_SERVER_URI:http://localhost:8761/eureka}
+
+redis:
+  host: ${REDIS_HOST:10.112.20.100}
+  port: ${REDIS_PORT:6379}
+  password: ${REDIS_PASSWORD:YourStrongRedisPass}
+  ssl:
+    enabled: false
+    ca: ${REDIS_SSL_CA:~}
+
+logging:
+  level:
+    root: info
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
