@@ -15,9 +15,9 @@ spring:
         default_schema: ${CURRENT_SCHEMA:gateway_customer_service}
 
   datasource:
-    url: ${MASTER_DB_URL:jdbc:postgresql://10.112.20.100:5432/postgres?currentSchema=gateway_customer_service}
-    username: ${MASTER_DB_USER:postgres}
-    password: ${MASTER_DB_PASSWORD:mysecretpassword}
+    url: ${MASTER_DB_URL:jdbc:postgresql://ep-divine-resonance-a12pm9wr-pooler.ap-southeast-1.aws.neon.tech:5432/neondb?currentSchema=gateway_customer_service}
+    username: ${MASTER_DB_USER:neondb_owner}
+    password: ${MASTER_DB_PASSWORD:npg_o0jRVsD6paht}
 
   liquibase:
     enabled: false
@@ -29,9 +29,9 @@ eureka:
       defaultZone: ${DISCOVERY_SERVER_URI:http://localhost:8761/eureka}
 
 redis:
-  host: ${REDIS_HOST:10.112.20.100}
+  host: ${REDIS_HOST:absolute-newt-26689.upstash.io}
   port: ${REDIS_PORT:6379}
-  password: ${REDIS_PASSWORD:YourStrongRedisPass}
+  password: ${REDIS_PASSWORD:AWhBAAIjcDE3NmZlZGU0ZGFmZGI0MmE5YmFlYTE3NzNhNTcwYjEyZnAxMA}
   ssl:
     enabled: false
     ca: ${REDIS_SSL_CA:~}

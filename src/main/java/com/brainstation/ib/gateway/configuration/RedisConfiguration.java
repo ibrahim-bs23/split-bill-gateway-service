@@ -50,6 +50,7 @@ public class RedisConfiguration {
 
         LettuceClientConfiguration lettuceClientConfiguration = LettucePoolingClientConfiguration.builder()
                 .poolConfig(genericObjectPoolConfig)
+                .useSsl()
                 .build();
 
         return new LettuceConnectionFactory(redisStandaloneConfiguration, lettuceClientConfiguration);
