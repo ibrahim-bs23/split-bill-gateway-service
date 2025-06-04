@@ -28,7 +28,6 @@
         <nimbus.jose.jwt.version>9.30.2</nimbus.jose.jwt.version>
 
         <imageName>${project.artifactId}:${project.version}</imageName>
-        <liquibase.hibernate6.version>4.26.0</liquibase.hibernate6.version>
     </properties>
 
     <dependencyManagement>
@@ -93,22 +92,6 @@
             <scope>runtime</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.liquibase</groupId>
-            <artifactId>liquibase-core</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.liquibase.ext</groupId>
-            <artifactId>liquibase-hibernate6</artifactId>
-            <version>${liquibase.hibernate6.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-simple</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
