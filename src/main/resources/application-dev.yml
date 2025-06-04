@@ -26,7 +26,7 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: ${DISCOVERY_SERVER_URI:http://localhost:8761/eureka}
+      defaultZone: ${DISCOVERY_SERVER_URI:https://discovery-service-production-f06d.up.railway.app}
 
 redis:
   host: ${REDIS_HOST:absolute-newt-26689.upstash.io}

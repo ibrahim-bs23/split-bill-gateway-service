@@ -96,7 +96,7 @@ eureka:
 
 redis:
   database:
-    index: ${REDIS_DATABASE_INDEX:11}
+    index: ${REDIS_DATABASE_INDEX:0}
   pool:
     max:
       connection: ${REDIS_POOL_MAX_CONNECTION:30}
