@@ -1,12 +1,14 @@
-FROM openjdk:17-jdk-slim
+# Use a minimal base image with Java 17
+FROM eclipse-temurin:17-jdk-alpine
 
-COPY service-jars/gateway-service.jar gateway-service.jar
+# Set working directory
+WORKDIR /app
 
-RUN useradd -r -u 10001 appuser
-RUN mkdir -p ./logs
+# Copy the built JAR file into the image
+COPY target/gateway-service.jar app.jar
 
-RUN chown appuser:appuser gateway-service.jar
-RUN chown appuser:appuser ./logs
+# Expose the port used by the Discovery Service (Eureka)
+EXPOSE 7030
 
-USER appuser
-ENTRYPOINT ["java", "-Duser.timezone=Asia/Dhaka", "-jar", "gateway-service.jar"]
+# Run the app
+ENTRYPOINT ["java", "-jar", "app.jar"]
