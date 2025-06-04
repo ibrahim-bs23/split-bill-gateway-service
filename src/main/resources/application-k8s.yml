@@ -10,7 +10,7 @@ spring:
     properties:
       hibernate:
         default_schema: ${CURRENT_SCHEMA}
-      dialect: ${spring.jpa.database-platform}
+      dialect: ${DATABASE_DIALECT}
   datasource:
     url: ${MASTER_DB_URL}
     username: ${MASTER_DB_USER}
@@ -24,18 +24,7 @@ eureka:
 redis:
   host: ${REDIS_HOST}
   port: ${REDIS_PORT}
-  password: ${REDIS_PASSWORD:~}
+  password: ${REDIS_PASSWORD}
 
 logging:
   config: classpath:log/logback-k8s.xml
-
-loki:
-  project: abbl
-  distributor:
-    url: ${LOKI_DISTRIBUTOR_URL}
-
-springdoc:
-  api-docs:
-    enabled: ${SWAGGER_ENABLE:true}
-  swagger-ui:
-    enabled: ${SWAGGER_ENABLE:true}

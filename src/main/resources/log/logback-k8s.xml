@@ -142,25 +142,6 @@
         </rollingPolicy>
     </appender>
 
-    <appender name="LOKI" class="com.github.loki4j.logback.Loki4jAppender">
-        <maxRetries>3600</maxRetries>
-        <batchTimeoutMs>10000</batchTimeoutMs>
-        <http>
-            <url>${LOKI_DISTRIBUTOR_URL}</url>
-        </http>
-        <verbose>true</verbose>
-        <format>
-            <label>
-                <pattern>
-                    project=${LOKI_PROJECT},service=${SERVICE_NAME},level=%level,logger=%logger{39},class=%X{class:-NA},method=%X{method:-NA}
-                </pattern>
-            </label>
-            <message>
-                <pattern>${LOKI_LOG_PATTERN}</pattern>
-            </message>
-            <sortByTime>false</sortByTime>
-        </format>
-    </appender>
 
     <logger name="errorLogger" level="ERROR" additivity="false">
         <appender-ref ref="ERROR_FILE_APPENDER"/>
