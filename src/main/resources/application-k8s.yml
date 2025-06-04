@@ -13,8 +13,8 @@ spring:
       dialect: ${spring.jpa.database-platform}
   datasource:
     url: ${MASTER_DB_URL}
-    username: ${MASTER_DB_USER:${MASTER_R2DBC_USER}}
-    password: ${MASTER_DB_PASSWORD:${MASTER_R2DBC_PASSWORD}}
+    username: ${MASTER_DB_USER}
+    password: ${MASTER_DB_PASSWORD}
 
 eureka:
   client:
